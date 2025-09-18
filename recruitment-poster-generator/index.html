@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Recruitment Poster Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>AI Recruitment Poster Generator</h1>
+      <p>
+        Configure your company settings once, then craft dynamic recruitment campaigns
+        with on-brand posters in just a few clicks.
+      </p>
+    </header>
+
+    <main class="app-layout">
+      <section class="control-panel">
+        <form id="settingsForm" class="panel-card" autocomplete="off">
+          <h2>Company Settings</h2>
+          <p class="panel-description">
+            Information in this section is saved for future sessions and powers the
+            footer of every poster you generate.
+          </p>
+
+          <div class="form-group">
+            <label for="clientLogoText">Client logo placeholder text</label>
+            <input type="text" id="clientLogoText" name="clientLogoText" />
+          </div>
+
+          <div class="form-group">
+            <label for="clientLogoInput">Upload client logo</label>
+            <input type="file" id="clientLogoInput" accept="image/*" />
+            <small>The uploaded logo is stored locally in your browser.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="companyLogoText">Company logo placeholder text</label>
+            <input type="text" id="companyLogoText" name="companyLogoText" />
+          </div>
+
+          <div class="form-group">
+            <label for="companyLogoInput">Upload company logo</label>
+            <input type="file" id="companyLogoInput" accept="image/*" />
+          </div>
+
+          <div class="form-group">
+            <label for="footerTitle">Footer title / company name</label>
+            <input type="text" id="footerTitle" name="footerTitle" />
+          </div>
+
+          <div class="form-group">
+            <label for="footerSubtitle">Footer subtitle</label>
+            <input type="text" id="footerSubtitle" name="footerSubtitle" />
+          </div>
+
+          <div class="form-group">
+            <label for="footerLines">Footer details</label>
+            <textarea
+              id="footerLines"
+              name="footerLines"
+              rows="4"
+              placeholder="Add each detail on a new line"
+            ></textarea>
+          </div>
+        </form>
+
+        <form id="campaignForm" class="panel-card" autocomplete="off">
+          <h2>Campaign Content</h2>
+          <p class="panel-description">
+            Update these fields for each recruitment drive. Click
+            <strong>Generate Poster</strong> to refresh the preview with your latest
+            content.
+          </p>
+
+          <fieldset>
+            <legend>Headline</legend>
+            <div class="form-group">
+              <label for="urgentHeadline">Urgent headline</label>
+              <input type="text" id="urgentHeadline" name="urgentHeadline" />
+            </div>
+            <div class="form-group">
+              <label for="interviewStatus">Interview status</label>
+              <input type="text" id="interviewStatus" name="interviewStatus" />
+            </div>
+            <div class="form-group">
+              <label for="highlightBanner">Top highlight banner</label>
+              <input type="text" id="highlightBanner" name="highlightBanner" />
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Positions</legend>
+            <div class="form-group">
+              <label for="salaryLabel">Salary column label</label>
+              <input type="text" id="salaryLabel" name="salaryLabel" />
+            </div>
+            <div id="positionsList" class="positions-list"></div>
+            <button type="button" class="secondary" id="addPositionBtn">Add position</button>
+          </fieldset>
+
+          <fieldset>
+            <legend>Campaign Notes</legend>
+            <div class="form-group">
+              <label for="visaInfo">Visa information</label>
+              <input type="text" id="visaInfo" name="visaInfo" />
+            </div>
+            <div class="form-group">
+              <label for="dutyInfo">Duty information</label>
+              <input type="text" id="dutyInfo" name="dutyInfo" />
+            </div>
+            <div class="form-group">
+              <label for="contractInfo">Contract highlight</label>
+              <input type="text" id="contractInfo" name="contractInfo" />
+            </div>
+            <div class="form-group">
+              <label for="contractNote">Documents &amp; call-to-action</label>
+              <textarea id="contractNote" name="contractNote" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="benefits">Benefits highlight</label>
+              <input type="text" id="benefits" name="benefits" />
+            </div>
+            <div class="form-group">
+              <label for="managedBy">Managed by</label>
+              <input type="text" id="managedBy" name="managedBy" />
+            </div>
+            <div class="form-group">
+              <label for="contactLines">Contact &amp; links</label>
+              <textarea id="contactLines" name="contactLines" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="location">Location</label>
+              <input type="text" id="location" name="location" />
+            </div>
+          </fieldset>
+
+          <button type="button" class="primary" id="generateBtn">Generate Poster</button>
+        </form>
+
+        <section class="panel-card" aria-labelledby="themeHeading">
+          <h2 id="themeHeading">Theme &amp; Colors</h2>
+          <p class="panel-description">
+            Instantly experiment with professional color palettes. Every combination
+            updates the full poster theme.
+          </p>
+          <div class="theme-preview" id="themePreview"></div>
+          <button type="button" class="primary" id="colorGeneratorBtn">
+            Generate Color Combination
+          </button>
+        </section>
+      </section>
+
+      <section class="poster-preview">
+        <div class="poster" id="poster">
+          <div class="poster-header">
+            <div class="logo-block" id="clientLogoPreview" aria-label="Client logo">
+              <span>Client Logo</span>
+              <img id="clientLogoImage" alt="Client logo" />
+            </div>
+            <div class="poster-headlines">
+              <p class="urgent" id="urgentHeadlinePreview"></p>
+              <p class="interview" id="interviewStatusPreview"></p>
+            </div>
+            <div class="logo-block" id="companyLogoPreview" aria-label="Company logo">
+              <span>Company Logo</span>
+              <img id="companyLogoImage" alt="Company logo" />
+            </div>
+          </div>
+
+          <div class="banner" id="highlightBannerPreview"></div>
+
+          <div class="positions-section">
+            <div class="positions-header">
+              <div class="pos-title">Position</div>
+              <div class="pos-meta">
+                <span>QTY</span>
+                <span id="salaryLabelPreview">Salary</span>
+              </div>
+            </div>
+            <table class="positions-table">
+              <tbody id="positionsTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="info-strip" id="infoStrip">
+            <div id="visaInfoPreview"></div>
+            <div id="dutyInfoPreview"></div>
+          </div>
+
+          <div class="contract-highlight" id="contractInfoPreview"></div>
+          <div class="callout" id="contractNotePreview"></div>
+          <div class="benefits" id="benefitsPreview"></div>
+          <div class="managed-by" id="managedByPreview"></div>
+          <div class="contacts" id="contactLinesPreview"></div>
+
+          <footer class="poster-footer">
+            <div class="footer-brand">
+              <p class="footer-title" id="footerTitlePreview"></p>
+              <p class="footer-subtitle" id="footerSubtitlePreview"></p>
+            </div>
+            <div class="footer-details" id="footerLinesPreview"></div>
+            <div class="footer-location" id="locationPreview"></div>
+          </footer>
+        </div>
+      </section>
+    </main>
+
+    <template id="positionRowTemplate">
+      <div class="position-row">
+        <div class="form-group small">
+          <label>Position title</label>
+          <input type="text" class="position-title" />
+        </div>
+        <div class="form-group tiny">
+          <label>Qty</label>
+          <input type="text" class="position-qty" />
+        </div>
+        <div class="form-group small">
+          <label>Salary</label>
+          <input type="text" class="position-salary" />
+        </div>
+        <button type="button" class="ghost remove-position">Remove</button>
+      </div>
+    </template>
+
+    <script src="script.js"></script>
+  </body>
+</html>
